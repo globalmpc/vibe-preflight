@@ -6,6 +6,12 @@ like a pilot's checklist before take-off — and explains what it finds in plain
 It covers more than security: deployment with Docker, runaway costs, unfinished code and
 risky coding-agent settings, so you know whether the app is ready for real users.
 
+![vibe-preflight checking a small Next.js app: it profiles the project, runs the checks, lists the top problems in plain words, asks which ones to fix, and writes report.md](docs/demo/demo.gif)
+
+<sub>Abridged from a real run on a small demo app (Next.js, Prisma, Postgres, OpenAI, Stripe,
+Docker Compose) written with typical vibe-coding mistakes. The full report it wrote:
+[sample-report.md](docs/demo/sample-report.md).</sub>
+
 ```
 /vibe-preflight
 ```
