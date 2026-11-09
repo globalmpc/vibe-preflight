@@ -59,11 +59,12 @@ key (`pk_`), Firebase web config, Google Maps keys restricted by domain (say so 
 
 ## SEC-05 One user can reach another user's data (IDOR) — RED
 
-**Look for:** handlers that load, update or delete a record by an id from the URL, query
-or body, **without** also checking that the record belongs to the logged-in user. Typical:
+**Look for:** handlers that load, update, delete, export, download or share a record by an
+id from the URL, query or body, **without** also checking that the record belongs to the logged-in user. Typical:
 `findUnique({ where: { id: params.id } })`, `Model.objects.get(pk=id)`,
 `SELECT … WHERE id = $1` with no `user_id`/`owner_id`/`org_id` condition and no ownership
-check after loading.
+check after loading. Deliberately public share links (random unguessable token, meant to be
+opened by anyone) are not a finding.
 
 **Why:** changing `/orders/41` to `/orders/42` shows someone else's order.
 
@@ -89,10 +90,14 @@ the role on the server, not only by hiding buttons in the UI.
 - RED: JWT secret hard-coded or trivial (`"secret"`, `"changeme"`), `algorithms: ['none']`,
   `jwt.decode` used instead of verify, `verify=False`/`options={"verify_signature": False}`.
 - YELLOW: session cookie without `httpOnly`, `secure` (in production) or `sameSite`;
-  auth tokens kept in `localStorage`; password reset tokens that never expire.
+  auth tokens kept in `localStorage`; password reset tokens that never expire, are not
+  invalidated once used (the same link works twice), are stored unhashed, or stay valid
+  after a newer one is issued.
 
 **Fix:** bcrypt/argon2 for passwords; a long random secret from env; verify tokens with an
-explicit algorithm; secure cookie flags.
+explicit algorithm; secure cookie flags; reset tokens that are random, stored hashed,
+short-lived, deleted in the same step that sets the new password, and replaced when a new one
+is requested.
 
 ## SEC-08 Injection — RED
 
