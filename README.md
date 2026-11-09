@@ -39,9 +39,20 @@ Then it asks which problems you want fixed. It changes nothing until you say so.
 
 ## Install
 
-Works in Claude Code, Codex and OpenCode. Clone this repo anywhere, then:
+Works in Claude Code, Codex and OpenCode. Pick one:
+
+**Option 1 — with curl (no clone needed)**
 
 ```bash
+curl -fsSL https://raw.githubusercontent.com/globalmpc/vibe-preflight/main/install.sh | bash                      # all: Claude Code + Codex (OpenCode reads both folders)
+curl -fsSL https://raw.githubusercontent.com/globalmpc/vibe-preflight/main/install.sh | bash -s -- --target codex  # one harness: claude | codex | opencode | all
+```
+
+**Option 2 — from a cloned repo**
+
+```bash
+git clone https://github.com/globalmpc/vibe-preflight.git
+cd vibe-preflight
 bash install.sh                 # all: Claude Code + Codex (OpenCode reads both folders)
 bash install.sh --target codex  # one harness: claude | codex | opencode | all
 ```

@@ -1,21 +1,40 @@
 #!/usr/bin/env bash
 # Install the vibe-preflight skill for Claude Code, Codex and/or OpenCode.
+#   curl -fsSL https://raw.githubusercontent.com/globalmpc/vibe-preflight/main/install.sh | bash
 #   bash install.sh                        all (Claude Code + Codex; OpenCode reads both)
 #   bash install.sh --target codex         one harness: claude | codex | opencode | all
+#   bash install.sh --ref v1.0             download that branch or tag from GitHub (even inside a clone)
+# Without --ref, a clone installs itself; otherwise main is downloaded from GitHub.
 set -eu
 
 name=vibe-preflight
-src=$(cd "$(dirname "$0")" && pwd -P)
+repo=globalmpc/vibe-preflight
+ref=
 target=all
 root=$HOME
 
 while [ $# -gt 0 ]; do
   case $1 in
     --target) target=${2:?--target needs a value}; shift 2 ;;
-    -h|--help) sed -n '2,4p' "$0" | sed 's/^# \{0,1\}//'; exit 0 ;;
+    --ref) ref=${2:?--ref needs a value}; shift 2 ;;
+    -h|--help) sed -n '2,7p' "$0" | sed 's/^# \{0,1\}//'; exit 0 ;;
     *) echo "Unknown option: $1 (try --help)" >&2; exit 1 ;;
   esac
 done
+
+# Skill source: the local clone if there is one, else a fresh download.
+here=; [ -n "${BASH_SOURCE:-}" ] && here=$(dirname "$BASH_SOURCE")   # empty when piped from curl
+if [ -z "$ref" ] && [ -n "$here" ] && [ -f "$here/$name/SKILL.md" ]; then
+  src=$(cd "$here/$name" && pwd -P)
+else
+  command -v curl >/dev/null && command -v tar >/dev/null || { echo "curl and tar are required" >&2; exit 1; }
+  ref=${ref:-main}
+  tmp=$(mktemp -d); trap 'rm -rf "$tmp"' EXIT
+  curl -fsSL "https://codeload.github.com/$repo/tar.gz/$ref" | tar -xz -C "$tmp" --strip-components=1 \
+    || { echo "Download failed: $repo@$ref" >&2; exit 1; }
+  src=$tmp/$name
+  [ -f "$src/SKILL.md" ] || { echo "No $name/SKILL.md in $repo@$ref" >&2; exit 1; }
+fi
 
 # Folder each harness reads skills from (OpenCode also reads the .claude and .agents ones).
 dir_for() {
@@ -43,7 +62,7 @@ for t in $list; do
   esac
   rm -rf "$dest"            # replace an older copy; only ever this skill's own folder
   mkdir "$dest"
-  cp -r "$src/SKILL.md" "$src/checklists" "$src/templates" "$src/references" "$dest/"
+  cp -r "$src/." "$dest/"
   echo "installed for $t: $dest"
 done
 
