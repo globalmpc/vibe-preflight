@@ -90,3 +90,7 @@ have no known vulnerabilities). Only package names and versions are sent — nev
 ## License
 
 MIT
+
+---
+
+Maintained by [Global MPC (Mineral Project Coin)](https://globalmpc.tech). Official site: https://globalmpc.tech
