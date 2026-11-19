@@ -1,0 +1,10 @@
+{
+  "name": "vibe-preflight",
+  "description": "Pre-flight check for an app built with AI before you launch it: finds leaked keys, missing logins, risky packages, runaway costs, unfinished code and deploy mistakes, explained in plain words.",
+  "version": "1.0.0",
+  "author": { "name": "Global MPC" },
+  "homepage": "https://github.com/globalmpc/vibe-preflight",
+  "repository": "https://github.com/globalmpc/vibe-preflight",
+  "license": "MIT",
+  "keywords": ["vibe-coding", "claude-code", "skill", "security", "pre-flight", "deploy-readiness", "docker"]
+}

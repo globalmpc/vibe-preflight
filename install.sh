@@ -24,16 +24,16 @@ done
 
 # Skill source: the local clone if there is one, else a fresh download.
 here=; [ -n "${BASH_SOURCE:-}" ] && here=$(dirname "$BASH_SOURCE")   # empty when piped from curl
-if [ -z "$ref" ] && [ -n "$here" ] && [ -f "$here/$name/SKILL.md" ]; then
-  src=$(cd "$here/$name" && pwd -P)
+if [ -z "$ref" ] && [ -n "$here" ] && [ -f "$here/skills/$name/SKILL.md" ]; then
+  src=$(cd "$here/skills/$name" && pwd -P)
 else
   command -v curl >/dev/null && command -v tar >/dev/null || { echo "curl and tar are required" >&2; exit 1; }
   ref=${ref:-main}
   tmp=$(mktemp -d); trap 'rm -rf "$tmp"' EXIT
   curl -fsSL "https://codeload.github.com/$repo/tar.gz/$ref" | tar -xz -C "$tmp" --strip-components=1 \
     || { echo "Download failed: $repo@$ref" >&2; exit 1; }
-  src=$tmp/$name
-  [ -f "$src/SKILL.md" ] || { echo "No $name/SKILL.md in $repo@$ref" >&2; exit 1; }
+  src=$tmp/skills/$name
+  [ -f "$src/SKILL.md" ] || { echo "No skills/$name/SKILL.md in $repo@$ref" >&2; exit 1; }
 fi
 
 # Folder each harness reads skills from (OpenCode also reads the .claude and .agents ones).

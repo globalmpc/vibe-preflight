@@ -1,0 +1,10 @@
+{
+  "name": "vibe-preflight",
+  "version": "1.0.0",
+  "private": true,
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/globalmpc/vibe-preflight"
+  }
+}

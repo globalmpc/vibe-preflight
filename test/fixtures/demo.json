@@ -1,0 +1,103 @@
+{
+  "schema": 1,
+  "project": "TaskNote",
+  "scanDate": "2026-11-19",
+  "fixed": 0,
+  "findings": [
+    {
+      "severity": "RED",
+      "category": "deployment",
+      "fixMinutes": 20
+    },
+    {
+      "severity": "RED",
+      "category": "deployment",
+      "fixMinutes": 10
+    },
+    {
+      "severity": "RED",
+      "category": "secrets",
+      "fixMinutes": 30
+    },
+    {
+      "severity": "RED",
+      "category": "security",
+      "fixMinutes": 45
+    },
+    {
+      "severity": "RED",
+      "category": "cost",
+      "fixMinutes": 30
+    },
+    {
+      "severity": "YELLOW",
+      "category": "security",
+      "fixMinutes": 20
+    },
+    {
+      "severity": "YELLOW",
+      "category": "cost",
+      "fixMinutes": 30
+    },
+    {
+      "severity": "YELLOW",
+      "category": "unfinished",
+      "fixMinutes": 15
+    },
+    {
+      "severity": "YELLOW",
+      "category": "deployment",
+      "fixMinutes": 30
+    },
+    {
+      "severity": "YELLOW",
+      "category": "dependencies",
+      "fixMinutes": 20
+    },
+    {
+      "severity": "YELLOW",
+      "category": "agent",
+      "fixMinutes": 10
+    },
+    {
+      "severity": "YELLOW",
+      "category": "unfinished",
+      "fixMinutes": 10
+    },
+    {
+      "severity": "INFO",
+      "category": "dependencies",
+      "fixMinutes": 5
+    },
+    {
+      "severity": "INFO",
+      "category": "unfinished",
+      "fixMinutes": 5
+    },
+    {
+      "severity": "INFO",
+      "category": "deployment",
+      "fixMinutes": 5
+    },
+    {
+      "doneWell": true,
+      "category": "security"
+    },
+    {
+      "doneWell": true,
+      "category": "dependencies"
+    },
+    {
+      "doneWell": true,
+      "category": "deployment"
+    },
+    {
+      "doneWell": true,
+      "category": "cost"
+    },
+    {
+      "doneWell": true,
+      "category": "unfinished"
+    }
+  ]
+}
