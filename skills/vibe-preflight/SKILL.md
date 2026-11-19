@@ -49,6 +49,9 @@ in), take the arguments from the words the user typed with the request instead.
 7. **Ask once for network access.** Some checks contact package registries (only package
    names and versions leave the machine, never code). Ask the user once, before step 3.
    If they decline, mark those checks `not checked` in the coverage table.
+   In that same single question, also ask: "May I also draw a shareable report card at the
+   end? It runs a small script bundled with this skill on your computer (Node, no network,
+   nothing installed) and shows only a grade and counts, never what or where the problems are."
 8. **Never install tools** and never run the app or its deploy commands during the audit.
    Read-only commands are fine: `git ls-files`, `git log`, `git status`,
    `docker compose config --no-interpolate` / `podman compose config --no-interpolate`
@@ -216,10 +219,48 @@ is the file you work from in step 6.
 - **If step 4 ran**, start with one plain line of progress, e.g. "Since the last check:
   2 problems fixed, 1 new." List the fixed ones by their plain titles.
 
+**Also write `.vibe-preflight/findings.json`** (always, after the two reports; same safety
+check and `.gitignore` as above). It feeds the report card script and holds only this:
+
+```json
+{ "schema": 1, "project": "TaskNote", "scanDate": "2026-11-19", "fixed": 2,
+  "findings": [ {"severity":"RED","category":"secrets","fixMinutes":15},
+                {"severity":"YELLOW","category":"deployment","fixMinutes":30},
+                {"doneWell":true,"category":"security"} ] }
+```
+
+- `fixed` = number fixed per step 4, else 0. `scanDate` = today, `YYYY-MM-DD`.
+- One entry per finding in `details.md` (`severity` RED/YELLOW/INFO, `fixMinutes` = your
+  whole-number estimate), and one `doneWell` entry per "already good" item.
+- `category` is one of `security`, `secrets`, `dependencies`, `cost`, `unfinished`,
+  `deployment`, `agent`. `secrets` = any key, password or token stored or exposed (e.g.
+  SEC-01/02/03, DC-07, AGT-04). Otherwise by checklist: `security.md` → security;
+  `dependencies.md` → dependencies; `cost-abuse.md` → cost; `unfinished-code.md` → unfinished;
+  `deploy-readiness.md`, `containers.md`, `platforms.md`, `dockerfile.md` → deployment;
+  `agent-config.md` → agent.
+- **No titles, paths, keys, check ids, evidence, names or values** in this file. Only the
+  fields above.
+
 Then give the user a short chat summary in the same plain style: the verdict, the top
 problems, and that `report.md` is for them and `details.md` is for whoever does the fixing.
 Keep it short: the owner's own to-do list (rotate keys, change live passwords) lives in
 `report.md`, not in the chat.
+
+### 5b. Report card (only if the user agreed)
+
+Only if the user said yes to the report card in rule 7 **and** Node 18 or newer is
+installed (`node --version`), run:
+
+```
+node "<skill folder>/scripts/report-card.mjs" "<project root>"
+```
+
+It reads `findings.json` and writes the card images into `.vibe-preflight/`. Nothing is
+installed and nothing leaves the machine. Add at most 2 lines to the summary: where the card
+is, and the badge snippet it printed (the badge is self-reported, nothing verifies it). Say
+the card is only meant for an app the user owns or has permission to scan. If Node is
+missing or the script fails, say so in one line and continue. If the user declined, say
+nothing about it.
 
 ### 6. Offer fixes — only what the user approves
 
