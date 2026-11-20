@@ -13,7 +13,7 @@ Docker Compose) written with typical vibe-coding mistakes. The full report it wr
 [sample-report.md](docs/demo/sample-report.md).</sub>
 
 ```
-/vibe-preflight            # installed as a plugin: /vibe-preflight:vibe-preflight
+/vibe-preflight
 ```
 
 It reads your project and writes two files to `.vibe-preflight/` (git-ignored):
@@ -41,18 +41,15 @@ Then it asks which problems you want fixed. It changes nothing until you say so.
 
 ### Install (recommended)
 
-In Claude Code:
-
-```
-/plugin marketplace add globalmpc/vibe-tools
-/plugin install vibe-preflight@vibe-tools
+```bash
+npx skills add globalmpc/vibe-preflight
 ```
 
-Installed as a plugin, the command is `/vibe-preflight:vibe-preflight`.
+Works with Claude Code, Codex, OpenCode and other agents; it asks which ones to install for.
 
 ### Manual install
 
-Works in Claude Code, Codex and OpenCode. Pick one:
+Without `npx`. Works in Claude Code, Codex and OpenCode. Pick one:
 
 **Option 1 — with curl (no clone needed)**
 
@@ -89,8 +86,6 @@ Run it again to update. With a manual install, start the skill with `/vibe-prefl
 /vibe-preflight security lang=id   # combine with an area or folder
 ```
 
-Installed as a plugin, use `/vibe-preflight:vibe-preflight` instead of `/vibe-preflight`.
-
 The skill asks once before contacting package registries (to check that packages exist and
 have no known vulnerabilities). Only package names and versions are sent — never your code.
 
@@ -98,7 +93,7 @@ have no known vulnerabilities). Only package names and versions are sent — nev
 
 ![Report card for the demo app TaskNote: grade F, 5 must fix, 10 worth fixing, 5 done well, counts per area, estimated fix time](docs/demo/report-card.png)
 
-After a scan, if you say yes, a small script bundled with the skill (Node 18+, no network, nothing
+After a full scan (no area or folder given), if you say yes, a small script bundled with the skill (Node 18+, no network, nothing
 installed) turns the findings into a shareable image: a grade, counts per area and a fix-time
 estimate, never what or where the problems are. A second card shows progress when you scan again.
 The grade comes from the script, not from the AI: see [docs/grading.md](docs/grading.md).
@@ -123,15 +118,6 @@ Scan only apps you own or have permission to scan.
   check it; anything uncertain is listed separately as "Needs a human look".
 - It does not replace a professional security review for apps that handle money or
   sensitive personal data.
-
-## Releasing
-
-Maintainer note. To ship a new version to plugin users, bump `version` in
-`.claude-plugin/plugin.json` (and in `skills/vibe-preflight/package.json`, which feeds the report
-card label) in the release commit, then push. Users stay on their cached copy until that string
-changes (we pin on purpose; omitting `version` would track every commit). They get it with
-`/plugin marketplace update vibe-tools`, or auto-update if enabled. Do not set `version` in the
-`vibe-tools` marketplace entry.
 
 ## License
 

@@ -49,9 +49,10 @@ in), take the arguments from the words the user typed with the request instead.
 7. **Ask once for network access.** Some checks contact package registries (only package
    names and versions leave the machine, never code). Ask the user once, before step 3.
    If they decline, mark those checks `not checked` in the coverage table.
-   In that same single question, also ask: "May I also draw a shareable report card at the
-   end? It runs a small script bundled with this skill on your computer (Node, no network,
-   nothing installed) and shows only a grade and counts, never what or where the problems are."
+   In that same single question, but only for a full-scope run (see 5b), also ask: "May I
+   also draw a shareable report card at the end? It runs a small script bundled with this
+   skill on your computer (Node, no network, nothing installed) and shows only a grade and
+   counts, never what or where the problems are."
 8. **Never install tools** and never run the app or its deploy commands during the audit.
    Read-only commands are fine: `git ls-files`, `git log`, `git status`,
    `docker compose config --no-interpolate` / `podman compose config --no-interpolate`
@@ -248,8 +249,14 @@ Keep it short: the owner's own to-do list (rotate keys, change live passwords) l
 
 ### 5b. Report card (only if the user agreed)
 
-Only if the user said yes to the report card in rule 7 **and** Node 18 or newer is
-installed (`node --version`), run:
+**Full scans only.** The card grades the whole app and the progress card compares it with
+the last card, so a partial scan would show problems "gone" that were just not checked.
+Full scope = no area keyword and no folder (empty or `all`; `lang=` does not narrow the
+scope). For any narrower run (an area keyword or a folder), skip this step, do not ask
+about the card, and say nothing about it.
+
+Only if the run is full scope, the user said yes to the report card in rule 7 **and**
+Node 18 or newer is installed (`node --version`), run:
 
 ```
 node "<skill folder>/scripts/report-card.mjs" "<project root>"
